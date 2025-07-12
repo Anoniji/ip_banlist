@@ -65,17 +65,17 @@ def process_ipv4_list(input_file, output_file, max_workers):
                 if line and not line.startswith('#'):
                     ipv4_addr.append(line)
     except FileNotFoundError:
-        print("Error: Input file '" + input_file + "' not found")
+        print(f"Error: Input file '{input_file}' not found")
         return
     except Exception as e:
-        print("Error reading input file: " + e)
+        print(f"Error reading input file: {e}")
         return
 
     if not ipv4_addr:
         print("No IPv4 addresses found in input file")
         return
 
-    print("Processing " + str(len(ipv4_addr)) + "IPv4 addresses...")
+    print(f"Processing {len(ipv4_addr)} IPv4 addresses...")
 
     # Thread-safe counter and results storage
     lock = threading.Lock()
@@ -96,9 +96,7 @@ def process_ipv4_list(input_file, output_file, max_workers):
 
             # Progress indicator
             if proc_cnt % 10 == 0:
-                out = "Processed: " + str(proc_cnt / len(ipv4_addr)) + " - "
-                out += "Found: " + str(found_cnt) + " IPv6 addresses"
-                print(out)
+                print(f"Processed: {proc_cnt}/{len(ipv4_addr)} - Found: {found_cnt} IPv6 addresses")
 
     # Process addresses concurrently
     start_time = time.time()
@@ -113,7 +111,7 @@ def process_ipv4_list(input_file, output_file, max_workers):
             try:
                 future.result()
             except Exception as e:
-                print("Error processing address: " + e)
+                print(f"Error processing address: {e}")
 
     end_time = time.time()
 
@@ -121,9 +119,9 @@ def process_ipv4_list(input_file, output_file, max_workers):
     try:
         with open(output_file, 'w') as f:
             for ipv6 in ipv6_results:
-                f.write(ipv6 + "\n")
+                f.write(f"{ipv6}\n")
     except Exception as e:
-        print("Error writing output file: " + e)
+        print(f"Error writing output file: {e}")
         return
 
     # Print statistics
