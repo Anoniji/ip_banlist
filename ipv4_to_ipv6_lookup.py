@@ -95,7 +95,7 @@ def process_ipv4_list(input_file, output_file, max_workers):
                 ipv6_results.append(ipv6)
 
             # Progress indicator
-            if proc_cnt % 10 == 0:
+            if proc_cnt % max_workers == 0:
                 print(f"Processed: {proc_cnt}/{len(ipv4_addr)} - Found: {found_cnt} IPv6 addresses")
 
     # Process addresses concurrently
